@@ -1,0 +1,46 @@
+<div class="sudoku-container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <button class="back-btn">←</button>
+        <span class="streak">Streak <span class="highlight">16</span></span>
+        <span class="score">Score: 0</span>
+        <span class="difficulty">Hard</span>
+        <span class="timer">00:04</span>
+    </div>
+
+    <!-- Sudoku Grid -->
+    <div class="sudoku-grid">
+        <table>
+            <tr *ngFor="let row of board; let rowIndex = index">
+                <td *ngFor="let cell of row; let colIndex = index" [class.prefilled]="cell !== 0"
+                    [class.selected]="isCellSelected(rowIndex, colIndex)" (click)="selectCell(rowIndex, colIndex)">
+
+                    <!-- Editable input for empty cells -->
+                    <input *ngIf="cell === 0" type="text" maxlength="1" pattern="[1-9]*"
+                        (input)="onInputChange($event, rowIndex, colIndex)" [value]="board[rowIndex][colIndex]" />
+
+                    <!-- Prefilled numbers -->
+                    <span *ngIf="cell !== 0">{{ cell }}</span>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button (click)="undo()">↺ Undo</button>
+        <button (click)="erase()">📝 Erase</button>
+        <button>Auto Note <span class="badge">1</span></button>
+        <button>Note (OFF)</button>
+        <button>💡 Smart Hint <span class="badge">1</span></button>
+    </div>
+
+    <!-- Number Selection Bar -->
+    <div class="number-bar">
+        <button *ngFor="let num of numbers" (click)="selectNumber(num)" [class.selected]="num === selectedNumber">
+            {{ num }}
+            <span class="small">{{ getNoteCount(num) }}</span>
+        </button>
+    </div>
+</div>
